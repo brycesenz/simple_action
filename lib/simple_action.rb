@@ -1,0 +1,8 @@
+require 'simple_action/version'
+require 'simple_action/error'
+require 'simple_action/params'
+require 'simple_action/response'
+require 'simple_action/service'
+require 'simple_action/concerns/accepts_params'
+require 'simple_action/concerns/transactable'
+require 'simple_action/concerns/delegates_to_params'
