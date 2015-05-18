@@ -81,4 +81,24 @@ describe SimpleAction::Response do
       end
     end
   end
+
+  describe "#value" do
+    let(:object) { DummyServiceObjectClass.new(name: "Dummy") }
+
+    context "with no result provided" do
+      let(:response) { described_class.new(object) }
+
+      it "is nil" do
+        response.value.should be_nil
+      end
+    end
+
+    context "with response provided" do
+      let(:response) { described_class.new(object, 53) }
+
+      it "is 53" do
+        response.value.should eq(53)
+      end
+    end
+  end
 end

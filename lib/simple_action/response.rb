@@ -21,5 +21,6 @@ module SimpleAction
     def result
       @result
     end
+    alias_method :value, :result
   end
 end

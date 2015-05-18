@@ -12,7 +12,7 @@ module SimpleAction
       def run(params = {})
         instance = self.new(params)
         result = transaction do
-            instance.execute if instance.valid?
+          instance.execute if instance.valid?
         end
         Response.new(instance, result)
       end
