@@ -30,6 +30,7 @@ module SimpleAction
     def initialize(params={})
       @raw_params = params
       @params = self.class.params_class.new(params)
+      @validity = nil
     end
 
     def params
@@ -37,7 +38,13 @@ module SimpleAction
     end
 
     def valid?
-      @params.valid?
+      # Adding this so that I don't assert validity each time.
+      # TODO: I Still need a proper test for this.
+      if @validity.nil?
+        @validity = @params.valid?
+      else
+        @validity
+      end
     end
 
     def errors
