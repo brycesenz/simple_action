@@ -35,7 +35,7 @@ describe SimpleAction::Service do
           outcome.should be_success
         end
 
-        it "has result equal to output of execute", failing: true do
+        it "has result equal to output of execute" do
           outcome.result.should eq(41)
         end
 
@@ -65,7 +65,7 @@ describe SimpleAction::Service do
 
     describe "#api_pie_documentation", api_pie_documentation: true do
       it "equals params api_pie_documentation" do
-        ServiceSpecClass.api_pie_documentation.should eq("param :name, String, desc: '', required: true\nparam :age, Integer, desc: '', required: true")
+        ServiceSpecClass.api_pie_documentation.should eq("param :name, String, desc: '', required: true\nparam :age, Integer, desc: '', required: false")
       end
     end
   end

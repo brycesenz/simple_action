@@ -12,7 +12,10 @@ module SimpleAction
       def run(params = {})
         instance = self.new(params)
         result = transaction do
-          instance.execute if instance.valid?
+          if instance.valid?
+            outcome = instance.execute
+            instance.errors.empty? ? outcome : nil
+          end
         end
         Response.new(instance, result)
       end
@@ -30,7 +33,7 @@ module SimpleAction
     def initialize(params={})
       @raw_params = params
       @params = self.class.params_class.new(params)
-      @validity = nil
+      @initial_params_valid = nil
     end
 
     def params
@@ -38,13 +41,7 @@ module SimpleAction
     end
 
     def valid?
-      # Adding this so that I don't assert validity each time.
-      # TODO: I Still need a proper test for this.
-      if @validity.nil?
-        @validity = @params.valid?
-      else
-        @validity
-      end
+      initial_params_valid? && errors.empty?
     end
 
     def errors
@@ -53,6 +50,15 @@ module SimpleAction
 
     def execute
       raise ImplementationError, "subclasses must implement 'execute' method."
+    end
+
+    private
+    def initial_params_valid?
+      if @initial_params_valid.nil?
+        @initial_params_valid = @params.valid?
+      else
+        @initial_params_valid
+      end
     end
   end
 end

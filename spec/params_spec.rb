@@ -166,12 +166,12 @@ describe SimpleAction::Params do
         param:reference, Object, desc:'', required: false
         param :name, String, desc: '', required: true
         param :age, Integer, desc: '', required: false
-        param :color, String, desc: '', required: true
+        param :color, String, desc: '', required: false
         param :address, Hash, desc: '', required: true do
           param :street, String, desc: '', required: true
           param :city, String, desc: '', required: true
           param :zip_code, String, desc: '', required: false
-          param :state, String, desc: '', required: true
+          param :state, String, desc: '', required: false
         end
       API_PIE_DOCS
 

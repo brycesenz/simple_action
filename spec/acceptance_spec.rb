@@ -14,7 +14,12 @@ describe "SimpleAction acceptance spec" do
     end
 
     def execute
-      name.upcase
+      name.gsub!(/[^a-zA-Z ]/,'')
+      if name == "outlier"
+        errors.add(:name, "can't be outlier")
+      else
+        name.upcase
+      end
     end
   end
 
@@ -41,12 +46,17 @@ describe "SimpleAction acceptance spec" do
 
       it { should be_nil }
     end
+
+    describe "effects" do
+    end
   end
 
   context "with invalid params" do
+    let!(:name) { "sdfg" }
+
     let(:params) do
       {
-        name: "sdfg"
+        name: name
       }
     end
 
@@ -66,12 +76,21 @@ describe "SimpleAction acceptance spec" do
 
       it { should be_nil }
     end
+
+    describe "effects" do
+      it "does not alter name" do
+        SimpleActionAcceptance.run(params)
+        name.should eq("sdfg")
+      end
+    end
   end
 
   context "with valid params" do
+    let!(:name) { "billy12" }
+
     let(:params) do
       {
-        name: "billy"
+        name: name
       }
     end
 
@@ -86,6 +105,47 @@ describe "SimpleAction acceptance spec" do
       subject { SimpleActionAcceptance.run(params).result }
 
       it { should eq("BILLY") }
+    end
+
+    describe "effects" do
+      it "strips numbers from name" do
+        SimpleActionAcceptance.run(params)
+        name.should eq("billy")
+      end
+    end
+  end
+
+  context "with outlier case" do
+    let!(:name) { "outlier12" }
+
+    let(:params) do
+      {
+        name: name
+      }
+    end
+
+    describe "outcome" do
+      subject { SimpleActionAcceptance.run(params) }
+
+      it { should_not be_valid }
+      it { should_not be_success }
+
+      it "should have name error", failing: true do
+        subject.errors[:name].should eq(["can't be outlier"])
+      end
+    end
+
+    describe "result" do
+      subject { SimpleActionAcceptance.run(params).result }
+
+      it { should be_nil }
+    end
+
+    describe "effects" do
+      it "alter names" do
+        SimpleActionAcceptance.run(params)
+        name.should eq("outlier")
+      end
     end
   end
 end
