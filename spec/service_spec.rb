@@ -3,6 +3,12 @@ require 'fixtures/service_spec_class'
 
 describe SimpleAction::Service do
   describe "class_methods", class_methods: true do
+    describe "#model_name", model_name: true do
+      it "has correct model name" do
+        ServiceSpecClass.model_name.should eq("ServiceSpecClass")
+      end
+    end
+
     describe "#run", run: true do
       context "with invalid attributes" do
         let(:outcome) { ServiceSpecClass.run(age: 12) }

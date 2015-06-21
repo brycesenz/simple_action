@@ -1,3 +1,4 @@
+require "active_model"
 require_relative 'concerns/accepts_params'
 require_relative 'concerns/transactable'
 require_relative 'concerns/delegates_to_params'
@@ -9,6 +10,10 @@ module SimpleAction
     include DelegatesToParams
 
     class << self
+      def model_name 
+        ActiveModel::Name.new(self)
+      end
+
       def run(params = {})
         instance = self.new(params)
         result = transaction do
