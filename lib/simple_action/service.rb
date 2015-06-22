@@ -7,7 +7,6 @@ module SimpleAction
   class Service
     extend AcceptsParams
     extend Transactable
-    include ActiveModel::Model
     include ActiveModel::Conversion
     extend ActiveModel::Naming
     include DelegatesToParams
@@ -15,13 +14,15 @@ module SimpleAction
     class << self
       def run(params = {})
         instance = self.new(params)
+        instance.mark_as_ran
         result = transaction do
           if instance.valid?
             outcome = instance.execute
             instance.errors.empty? ? outcome : nil
           end
         end
-        Response.new(instance, result)
+        instance.set_result(result)
+        instance
       end
 
       def run!(params = {})
@@ -38,6 +39,8 @@ module SimpleAction
       @raw_params = params
       @params = self.class.params_class.new(params)
       @initial_params_valid = nil
+      @result = nil
+      @has_run = false
     end
 
     def params
@@ -54,6 +57,27 @@ module SimpleAction
 
     def execute
       raise ImplementationError, "subclasses must implement 'execute' method."
+    end
+
+    def persisted?
+      false
+    end
+
+    def success?
+      valid? && @has_run
+    end
+
+    def result
+      @result
+    end
+    alias_method :value, :result
+
+    def set_result(result = nil)
+      @result = result
+    end
+
+    def mark_as_ran
+      @has_run = true
     end
 
     private

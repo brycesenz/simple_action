@@ -141,5 +141,61 @@ describe SimpleAction::Service do
         end
       end
     end
+
+    describe "#success?", success: true do
+      context "without having run" do
+        it "is false" do
+          ServiceSpecClass.new(name: "Tom", age: 12).should_not be_success
+        end
+      end
+
+      context "with invalid params" do
+        it "is false" do
+          ServiceSpecClass.run(age: 12).should_not be_success
+        end
+      end
+
+      context "with valid params" do
+        it "is true" do
+          ServiceSpecClass.run(name: "Tom", age: 12).should be_success
+        end
+      end
+    end
+
+    describe "#result", result: true do
+      context "with no result provided" do
+        it "is nil" do
+          service = ServiceSpecClass.new(name: "Tom", age: 12)
+          service.result.should be_nil
+        end
+      end
+
+      context "with result set" do
+        it "is 53" do
+          service = ServiceSpecClass.new(name: "Tom", age: 12)
+          service.result.should be_nil
+          service.set_result(53)
+          service.result.should eq(53)
+        end
+      end
+    end
+
+    describe "#value", value: true do
+      context "with no result provided" do
+        it "is nil" do
+          service = ServiceSpecClass.new(name: "Tom", age: 12)
+          service.value.should be_nil
+        end
+      end
+
+      context "with result set" do
+        it "is 53" do
+          service = ServiceSpecClass.new(name: "Tom", age: 12)
+          service.result.should be_nil
+          service.set_result(53)
+          service.value.should eq(53)
+        end
+      end
+    end
   end
 end
