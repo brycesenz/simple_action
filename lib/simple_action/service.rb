@@ -7,13 +7,11 @@ module SimpleAction
   class Service    
     extend AcceptsParams
     extend Transactable
+    include ActiveModel::Conversion
+    extend ActiveModel::Naming
     include DelegatesToParams
 
     class << self
-      def model_name 
-        ActiveModel::Name.new(self)
-      end
-
       def run(params = {})
         instance = self.new(params)
         result = transaction do

@@ -77,6 +77,13 @@ describe SimpleAction::Service do
   end
 
   describe "instance methods", instance_methods: true do
+    describe "#to_key", to_key: true do
+      it "has correct keys" do
+        params = ServiceSpecClass.new(name: "Tom", age: 12)
+        params.to_key.should be_nil
+      end
+    end
+
     describe "#params", params: true do
       it "assigns params" do
         instance = ServiceSpecClass.new(name: "Nic Cage", age: "40")
