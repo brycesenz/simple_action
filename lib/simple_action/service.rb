@@ -4,9 +4,10 @@ require_relative 'concerns/transactable'
 require_relative 'concerns/delegates_to_params'
 
 module SimpleAction
-  class Service    
+  class Service
     extend AcceptsParams
     extend Transactable
+    include ActiveModel::Model
     include ActiveModel::Conversion
     extend ActiveModel::Naming
     include DelegatesToParams

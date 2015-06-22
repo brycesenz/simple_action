@@ -84,6 +84,13 @@ describe SimpleAction::Service do
       end
     end
 
+    describe "#persisted?", persisted: true do
+      it "is not persisted" do
+        params = ServiceSpecClass.new(name: "Tom", age: 12)
+        params.persisted?.should eq(false)
+      end
+    end
+
     describe "#params", params: true do
       it "assigns params" do
         instance = ServiceSpecClass.new(name: "Nic Cage", age: "40")
