@@ -2,6 +2,16 @@ require 'spec_helper'
 require 'fixtures/params_spec_class'
 
 describe SimpleAction::Params do
+  describe "model_name", model_name: true do
+    it "has correct model_name for SimpleAction::Params" do
+      SimpleAction::Params.model_name.should eq("SimpleAction::Params")
+    end
+
+    it "has correct model_name for ParamsSpecClass" do
+      ParamsSpecClass.model_name.should eq("ParamsSpecClass")
+    end
+  end
+
   describe "original_params", original_params: true do
     it "returns symbolized params hash" do
       params = ParamsSpecClass.new(name: "Tom", address: { "street" => "1 Main St."} )

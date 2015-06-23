@@ -23,128 +23,142 @@ describe "SimpleAction acceptance spec" do
     end
   end
 
-  context "with nil params" do
-    let(:params) do
-      {
-        name: nil
-      }
-    end
-
-    describe "outcome" do
-      subject { SimpleActionAcceptance.run(params) }
-
-      it { should_not be_valid }
-      it { should_not be_success }
-
-      it "should have name error" do
-        subject.errors[:name].should eq(["can't be blank"])
-      end
-    end
-
-    describe "result" do
-      subject { SimpleActionAcceptance.run(params).result }
-
-      it { should be_nil }
-    end
-
-    describe "effects" do
+  describe "#model_name" do
+    it "equals class name" do
+      SimpleActionAcceptance.model_name.should eq("SimpleActionAcceptance")
     end
   end
 
-  context "with invalid params" do
-    let!(:name) { "sdfg" }
-
-    let(:params) do
-      {
-        name: name
-      }
-    end
-
-    describe "outcome" do
-      subject { SimpleActionAcceptance.run(params) }
-
-      it { should_not be_valid }
-      it { should_not be_success }
-
-      it "should have name error" do
-        subject.errors[:name].should eq(["must contain at least one vowel"])
-      end
-    end
-
-    describe "result" do
-      subject { SimpleActionAcceptance.run(params).result }
-
-      it { should be_nil }
-    end
-
-    describe "effects" do
-      it "does not alter name" do
-        SimpleActionAcceptance.run(params)
-        name.should eq("sdfg")
-      end
+  describe "params #model_name" do
+    it "equals class name::Params" do
+      SimpleActionAcceptance.new.params.model_name.should eq("SimpleActionAcceptance::SimpleActionAcceptanceParams")
     end
   end
 
-  context "with valid params" do
-    let!(:name) { "billy12" }
-
-    let(:params) do
-      {
-        name: name
-      }
-    end
-
-    describe "outcome" do
-      subject { SimpleActionAcceptance.run(params) }
-
-      it { should be_valid }
-      it { should be_success }
-    end
-
-    describe "result" do
-      subject { SimpleActionAcceptance.run(params).result }
-
-      it { should eq("BILLY") }
-    end
-
-    describe "effects" do
-      it "strips numbers from name" do
-        SimpleActionAcceptance.run(params)
-        name.should eq("billy")
+  describe "outcome" do
+    context "with nil params" do
+      let(:params) do
+        {
+          name: nil
+        }
       end
-    end
-  end
 
-  context "with outlier case" do
-    let!(:name) { "outlier12" }
+      describe "outcome" do
+        subject { SimpleActionAcceptance.run(params) }
 
-    let(:params) do
-      {
-        name: name
-      }
-    end
+        it { should_not be_valid }
+        it { should_not be_success }
 
-    describe "outcome" do
-      subject { SimpleActionAcceptance.run(params) }
+        it "should have name error" do
+          subject.errors[:name].should eq(["can't be blank"])
+        end
+      end
 
-      it { should_not be_valid }
-      it { should_not be_success }
+      describe "result" do
+        subject { SimpleActionAcceptance.run(params).result }
 
-      it "should have name error", failing: true do
-        subject.errors[:name].should eq(["can't be outlier"])
+        it { should be_nil }
+      end
+
+      describe "effects" do
       end
     end
 
-    describe "result" do
-      subject { SimpleActionAcceptance.run(params).result }
+    context "with invalid params" do
+      let!(:name) { "sdfg" }
 
-      it { should be_nil }
+      let(:params) do
+        {
+          name: name
+        }
+      end
+
+      describe "outcome" do
+        subject { SimpleActionAcceptance.run(params) }
+
+        it { should_not be_valid }
+        it { should_not be_success }
+
+        it "should have name error" do
+          subject.errors[:name].should eq(["must contain at least one vowel"])
+        end
+      end
+
+      describe "result" do
+        subject { SimpleActionAcceptance.run(params).result }
+
+        it { should be_nil }
+      end
+
+      describe "effects" do
+        it "does not alter name" do
+          SimpleActionAcceptance.run(params)
+          name.should eq("sdfg")
+        end
+      end
     end
 
-    describe "effects" do
-      it "alter names" do
-        SimpleActionAcceptance.run(params)
-        name.should eq("outlier")
+    context "with valid params" do
+      let!(:name) { "billy12" }
+
+      let(:params) do
+        {
+          name: name
+        }
+      end
+
+      describe "outcome" do
+        subject { SimpleActionAcceptance.run(params) }
+
+        it { should be_valid }
+        it { should be_success }
+      end
+
+      describe "result" do
+        subject { SimpleActionAcceptance.run(params).result }
+
+        it { should eq("BILLY") }
+      end
+
+      describe "effects" do
+        it "strips numbers from name" do
+          SimpleActionAcceptance.run(params)
+          name.should eq("billy")
+        end
+      end
+    end
+
+    context "with outlier case" do
+      let!(:name) { "outlier12" }
+
+      let(:params) do
+        {
+          name: name
+        }
+      end
+
+      describe "outcome" do
+        subject { SimpleActionAcceptance.run(params) }
+
+        it { should_not be_valid }
+        it { should_not be_success }
+
+        it "should have name error", failing: true do
+          subject.errors[:name].should eq(["can't be outlier"])
+        end
+      end
+
+      describe "result" do
+        subject { SimpleActionAcceptance.run(params).result }
+
+        it { should be_nil }
+      end
+
+      describe "effects" do
+        it "alter names" do
+          SimpleActionAcceptance.run(params)
+          name.should eq("outlier")
+        end
       end
     end
   end

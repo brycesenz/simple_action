@@ -1,4 +1,4 @@
-require 'simple_params'
+require "simple_params"
 
 module SimpleAction
   class Params < ::SimpleParams::Params

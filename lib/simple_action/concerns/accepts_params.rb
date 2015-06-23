@@ -8,13 +8,11 @@ module SimpleAction
     attr_accessor :params_class
 
     def params(&block)
-      @params_class = Class.new(Params).tap do |klass|
-        name_function = Proc.new {
-          def self.model_name
-            ActiveModel::Name.new(self, self, "Params")
-          end
-        }
-        klass.class_eval(&name_function)
+      klass_name = self.model_name.to_s
+      klass_name = klass_name + "Params"
+      @params_class = Class.new(SimpleAction::Params).tap do |klass|
+        extend ActiveModel::Naming
+        self.const_set(klass_name, klass)
         klass.class_eval(&block)
       end
     end
