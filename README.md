@@ -86,6 +86,27 @@ class UserController < ApplicationController
 Because the service class behaves like an ActiveModel object with regards to it's attribute assignment and parameter validation, it will continue to work with Rails forms.
 
 
+# Strict/Flexible Parameter Enforcement
+
+By default, SimpleAction via SimpleParams will throw an error if you try to assign a parameter not defined within your class.  However, you can override this setting to allow for flexible parameter assignment.
+
+```ruby
+class FlexibleParams < SimpleAction::Service
+  params do
+    allow_undefined_params
+    param :name
+    param :age, type: :integer, default: 23
+  end
+
+params = FlexibleParams.new(name: "Bryce", age: 30, weight: 160, dog: { name: "Bailey", breed: "Shiba Inu" })
+
+params.name #=> "Bryce"
+params.age #=> 30
+params.weight #=> 160
+params.dog.name #=> "Bailey"
+params.dog.breed #=> "Shiba Inu"
+```
+
 # ApiPie Documentation
 
 If your project is using [apipie-rails](http://example.com/ "apipie-rails"),
