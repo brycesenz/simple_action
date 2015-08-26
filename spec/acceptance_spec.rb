@@ -4,6 +4,7 @@ describe "SimpleAction acceptance spec" do
   class SimpleActionAcceptance < SimpleAction::Service
     params do
       param :name, type: :string
+      param :date_of_birth, type: :date, optional: true
       validate :name_has_vowels, if: :name
 
       def name_has_vowels
@@ -17,6 +18,8 @@ describe "SimpleAction acceptance spec" do
       name.gsub!(/[^a-zA-Z ]/,'')
       if name == "outlier"
         errors.add(:name, "can't be outlier")
+      elsif date_of_birth.present?
+        name.upcase + ' ' + date_of_birth.strftime("%m/%d/%Y")
       else
         name.upcase
       end
@@ -118,6 +121,39 @@ describe "SimpleAction acceptance spec" do
         subject { SimpleActionAcceptance.run(params).result }
 
         it { should eq("BILLY") }
+      end
+
+      describe "effects" do
+        it "strips numbers from name" do
+          SimpleActionAcceptance.run(params)
+          name.should eq("billy")
+        end
+      end
+    end
+
+    context "with date coercion params" do
+      let!(:name) { "billy12" }
+
+      let(:params) do
+        {
+          name: name,
+          "date_of_birth(3i)" => "5",
+          "date_of_birth(2i)" => "6",
+          "date_of_birth(1i)" => "1984"
+        }
+      end
+
+      describe "outcome" do
+        subject { SimpleActionAcceptance.run(params) }
+
+        it { should be_valid }
+        it { should be_success }
+      end
+
+      describe "result" do
+        subject { SimpleActionAcceptance.run(params).result }
+
+        it { should eq("BILLY 06/05/1984") }
       end
 
       describe "effects" do
