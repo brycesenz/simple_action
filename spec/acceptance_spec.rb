@@ -7,9 +7,12 @@ describe "SimpleAction acceptance spec" do
       param :date_of_birth, type: :date, optional: true
       validate :name_has_vowels, if: :name
 
-      #TODO: Must fix this error in SimpleParams!!
-      nested_hash :address, default: {} do
+      nested_hash :address, optional: true do
         param :street, optional: true
+      end
+
+      nested_array :phones, with_ids: true do
+        param :phone_number
       end
 
       def name_has_vowels
@@ -144,7 +147,12 @@ describe "SimpleAction acceptance spec" do
 
       let(:params) do
         {
-          name: name
+          name: name,
+          phones: [
+            "0" => {
+              phone_number: "8005551212"
+            }
+          ]
         }
       end
 
@@ -177,7 +185,12 @@ describe "SimpleAction acceptance spec" do
           name: name,
           "date_of_birth(3i)" => "5",
           "date_of_birth(2i)" => "6",
-          "date_of_birth(1i)" => "1984"
+          "date_of_birth(1i)" => "1984",
+          phones: [
+            "0" => {
+              phone_number: "8005551212"
+            }
+          ]
         }
       end
 
@@ -207,7 +220,12 @@ describe "SimpleAction acceptance spec" do
 
       let(:params) do
         {
-          name: name
+          name: name,
+          phones: [
+            "0" => {
+              phone_number: "8005551212"
+            }
+          ]
         }
       end
 
