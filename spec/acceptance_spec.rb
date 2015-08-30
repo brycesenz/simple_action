@@ -7,6 +7,11 @@ describe "SimpleAction acceptance spec" do
       param :date_of_birth, type: :date, optional: true
       validate :name_has_vowels, if: :name
 
+      #TODO: Must fix this error in SimpleParams!!
+      nested_hash :address, default: {} do
+        param :street, optional: true
+      end
+
       def name_has_vowels
         unless name.scan(/[aeiou]/).count >= 1
           errors.add(:name, "must contain at least one vowel")
@@ -26,15 +31,48 @@ describe "SimpleAction acceptance spec" do
     end
   end
 
-  describe "#model_name" do
+  describe "#model_name", model_name: true do
     it "equals class name" do
       SimpleActionAcceptance.model_name.should eq("SimpleActionAcceptance")
     end
   end
 
-  describe "params #model_name" do
+  describe "params #model_name", params_model_name: true do
     it "equals class name::Params" do
       SimpleActionAcceptance.new.params.model_name.should eq("SimpleActionAcceptance::SimpleActionAcceptanceParams")
+    end
+  end
+
+  describe "params accessors", params: true do
+    let(:instance) { SimpleActionAcceptance.new }
+
+    it "allows setters and getters on param vars" do
+      instance.name = "Bob"
+      expect(instance.name).to eq("Bob")
+    end
+
+    it "allows setters and getters on nested_hash" do
+      instance.address = { street: "1 Main St." }
+      expect(instance.address.street).to eq("1 Main St.")
+    end
+
+    it "allows setters and getters on nested_hash using _attributes" do
+      instance.address_attributes = { street: "1 Main St." }
+      expect(instance.address.street).to eq("1 Main St.")
+    end
+
+    it "responds to build_ methods" do
+      address = instance.build_address
+      address.class.name.should eq("SimpleActionAcceptance::SimpleActionAcceptanceParams::Address")
+    end
+  end
+
+  describe "class methods", class_methods: true do
+    describe "reflect_on_association", reflect_on_association: true do
+      it "returns Address class for :address" do
+        address_klass = SimpleActionAcceptance.reflect_on_association(:address)
+        address_klass.klass.should eq(SimpleActionAcceptance::SimpleActionAcceptanceParams::Address)
+      end
     end
   end
 
