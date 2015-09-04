@@ -235,7 +235,7 @@ describe "SimpleAction acceptance spec" do
         it { should_not be_valid }
         it { should_not be_success }
 
-        it "should have name error", failing: true do
+        it "should have name error" do
           subject.errors[:name].should eq(["can't be outlier"])
         end
       end

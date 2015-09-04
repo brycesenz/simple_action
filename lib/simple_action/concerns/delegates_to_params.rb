@@ -14,32 +14,6 @@ module SimpleAction
       super(sym, *args, &block)
     end
 
-
-      # # Overriding this method to allow for non-strict enforcement!
-      # def method_missing(method_name, *arguments, &block)
-      #   if strict_enforcement?
-      #     raise SimpleParamsError, "parameter #{method_name} is not defined."
-      #   else
-      #     if @original_params.include?(method_name.to_sym)
-      #       value = @original_params[method_name.to_sym]
-      #       if value.is_a?(Hash)
-      #         define_anonymous_class(method_name, value)
-      #       else
-      #         Attribute.new(self, method_name).value = value
-      #       end
-      #     end
-      #   end
-      # end
-
-      # def respond_to?(method_name, include_private = false)
-      #   if strict_enforcement?
-      #     super
-      #   else
-      #     @original_params.include?(method_name.to_sym) || super
-      #   end
-      # end
-
-
     private
     def pass_sym_to_params?(sym)
       params.present? &&
