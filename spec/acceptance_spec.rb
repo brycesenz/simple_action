@@ -24,13 +24,15 @@ describe "SimpleAction acceptance spec" do
 
     def execute
       name.gsub!(/[^a-zA-Z ]/,'')
-      if name == "outlier"
-        errors.add(:name, "can't be outlier")
-      elsif date_of_birth.present?
+      errors.add(:name, "can't be outlier") if name == "outlier"
+
+      formatted_name = if date_of_birth.present?
         name.upcase + ' ' + date_of_birth.strftime("%m/%d/%Y")
       else
         name.upcase
       end
+
+      formatted_name + " with #{phones.count} phones."
     end
   end
 
@@ -79,7 +81,7 @@ describe "SimpleAction acceptance spec" do
     end
   end
 
-  describe "outcome" do
+  describe "acceptance cases" do
     context "with nil params" do
       let(:params) do
         {
@@ -166,7 +168,7 @@ describe "SimpleAction acceptance spec" do
       describe "result" do
         subject { SimpleActionAcceptance.run(params).result }
 
-        it { should eq("BILLY") }
+        it { should eq("BILLY with 1 phones.") }
       end
 
       describe "effects" do
@@ -204,7 +206,7 @@ describe "SimpleAction acceptance spec" do
       describe "result" do
         subject { SimpleActionAcceptance.run(params).result }
 
-        it { should eq("BILLY 06/05/1984") }
+        it { should eq("BILLY 06/05/1984 with 1 phones.") }
       end
 
       describe "effects" do
@@ -244,7 +246,7 @@ describe "SimpleAction acceptance spec" do
       describe "result" do
         subject { SimpleActionAcceptance.run(params).result }
 
-        it { should eq("BILLY 06/05/1984") }
+        it { should eq("BILLY 06/05/1984 with 1 phones.") }
       end
 
       describe "effects" do
