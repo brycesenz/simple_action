@@ -215,6 +215,46 @@ describe "SimpleAction acceptance spec" do
       end
     end
 
+    context "with destroyed phones" do
+      let!(:name) { "billy12" }
+
+      let(:params) do
+        {
+          name: name,
+          date_of_birth: Date.new(1984, 6, 5),
+          phones: [
+            "0" => {
+              phone_number: "8005551210",
+              _destroy: "1"
+            },
+            "1" => {
+              phone_number: "8005551212"
+            }
+          ]
+        }
+      end
+
+      describe "outcome" do
+        subject { SimpleActionAcceptance.run(params) }
+
+        it { should be_valid }
+        it { should be_success }
+      end
+
+      describe "result" do
+        subject { SimpleActionAcceptance.run(params).result }
+
+        it { should eq("BILLY 06/05/1984") }
+      end
+
+      describe "effects" do
+        it "strips numbers from name" do
+          SimpleActionAcceptance.run(params)
+          name.should eq("billy")
+        end
+      end
+    end
+
     context "with outlier case" do
       let!(:name) { "outlier12" }
 

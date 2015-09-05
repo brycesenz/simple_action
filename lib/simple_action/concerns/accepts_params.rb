@@ -12,6 +12,7 @@ module SimpleAction
       klass_name = klass_name + "Params"
       @params_class = Class.new(SimpleAction::Params).tap do |klass|
         extend ActiveModel::Naming
+        klass.with_rails_helpers
         self.const_set(klass_name, klass)
         klass.class_eval(&block)
       end

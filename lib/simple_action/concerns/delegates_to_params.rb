@@ -10,8 +10,11 @@ module SimpleAction
     end
 
     def method_missing(sym, *args, &block)
-      return params.send(sym, *args, &block) if pass_sym_to_params?(sym)
-      super(sym, *args, &block)
+      if pass_sym_to_params?(sym)
+        params.send(sym, *args, &block) 
+      else
+        super(sym, *args, &block)
+      end
     end
 
     private
