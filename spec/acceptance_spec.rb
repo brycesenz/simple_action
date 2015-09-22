@@ -42,6 +42,12 @@ describe "SimpleAction acceptance spec" do
     end
   end
 
+  describe "#validators_on", validators_on: true do
+    it "equals class name" do
+      SimpleActionAcceptance.validators_on.should eq([])
+    end
+  end
+
   describe "params #model_name", params_model_name: true do
     it "equals class name::Params" do
       SimpleActionAcceptance.new.params.model_name.should eq("SimpleActionAcceptance::SimpleActionAcceptanceParams")

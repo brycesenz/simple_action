@@ -5,6 +5,24 @@ module SimpleAction
   module DelegatesToParams
     extend ActiveSupport::Concern
 
+    class_methods do
+      def respond_to?(sym, include_private = false)
+        pass_to_params_class?(sym) || super(sym, include_private)
+      end
+
+      def method_missing(sym, *args, &block)
+        if pass_to_params_class?(sym)
+          params_class.send(sym, *args, &block) 
+        else
+          super(sym, *args, &block)
+        end
+      end
+
+      def pass_to_params_class?(sym)
+        params_class.respond_to?(sym)
+      end
+    end
+
     def respond_to?(sym, include_private = false)
       pass_sym_to_params?(sym) || super(sym, include_private)
     end
