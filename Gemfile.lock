@@ -1,15 +1,8 @@
 PATH
   remote: .
   specs:
-    simple_action (1.4.6)
-
-PATH
-  remote: /home/bryce/Code/simple_params
-  specs:
-    simple_params (1.5.2)
-      activemodel (>= 3.0, < 5.0)
-      shoulda-matchers (~> 2.8)
-      virtus (>= 1.0.0)
+    simple_action (1.5.0)
+      simple_params (>= 1.5, < 2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -55,6 +48,10 @@ GEM
     rspec-mocks (2.99.3)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
+    simple_params (1.5.2)
+      activemodel (>= 3.0, < 5.0)
+      shoulda-matchers (~> 2.8)
+      virtus (>= 1.0.0)
     slop (3.6.0)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
@@ -74,4 +71,3 @@ DEPENDENCIES
   rake (~> 10.1)
   rspec (~> 2.6)
   simple_action!
-  simple_params!
