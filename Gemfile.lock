@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    simple_action (1.5.0)
+    simple_action (1.5.1)
       simple_params (>= 1.5, < 2.0)
 
 GEM

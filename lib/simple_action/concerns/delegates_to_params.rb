@@ -5,7 +5,11 @@ module SimpleAction
   module DelegatesToParams
     extend ActiveSupport::Concern
 
-    class_methods do
+    module ClassMethods
+      def reflect_on_association(sym)
+        params_class.reflect_on_association(sym)
+      end
+
       def respond_to?(sym, include_private = false)
         pass_to_params_class?(sym) || super(sym, include_private)
       end
@@ -59,12 +63,6 @@ module SimpleAction
 
     def build_method?(sym)
       sym.to_s.gsub('=', '').start_with?('build_')
-    end
-
-    module ClassMethods
-      def reflect_on_association(sym)
-        params_class.reflect_on_association(sym)
-      end
     end
   end
 end
