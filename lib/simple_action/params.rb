@@ -2,11 +2,6 @@ require "simple_params"
 
 module SimpleAction
   class Params < ::SimpleParams::Params
-    # Use Rails Helpers by default
-    # class << self
-    #   def using_rails_helpers?
-    #     true
-    #   end
-    # end
+    with_rails_helpers
   end
 end

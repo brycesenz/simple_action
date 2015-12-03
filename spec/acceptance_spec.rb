@@ -230,7 +230,7 @@ describe "SimpleAction acceptance spec" do
         {
           name: name,
           date_of_birth: Date.new(1984, 6, 5),
-          phones: [
+          phones: {
             "0" => {
               phone_number: "8005551210",
               _destroy: "1"
@@ -238,7 +238,7 @@ describe "SimpleAction acceptance spec" do
             "1" => {
               phone_number: "8005551212"
             }
-          ]
+          }
         }
       end
 
