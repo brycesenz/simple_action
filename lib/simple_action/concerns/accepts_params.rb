@@ -9,6 +9,7 @@ module SimpleAction
 
     def params(&block)
       klass_name = self.model_name.to_s
+      klass_name = get_non_namespaced_module(klass_name)
       klass_name = klass_name + "Params"
       @params_class = Class.new(SimpleAction::Params).tap do |klass|
         extend ActiveModel::Naming
@@ -20,6 +21,11 @@ module SimpleAction
 
     def api_pie_documentation
       @params_class.api_pie_documentation
+    end
+
+    private
+    def get_non_namespaced_module(name)
+      name.split('::').last || name
     end
   end
 end
