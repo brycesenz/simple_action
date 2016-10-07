@@ -49,7 +49,9 @@ module SimpleAction
     def delegatable_params_method?(sym)
       params_accessor?(sym) ||
       attributes_method?(sym) ||
-      build_method?(sym)
+      build_method?(sym) ||
+      validators_method?(sym) ||
+      client_side_validation_method?(sym)
     end
 
     def params_accessor?(sym)
@@ -63,6 +65,14 @@ module SimpleAction
 
     def build_method?(sym)
       sym.to_s.gsub('=', '').start_with?('build_')
+    end
+
+    def validators_method?(sym)
+      sym.to_s.sub('?', '').end_with?('_validators')
+    end
+
+    def client_side_validation_method?(sym)
+      sym.to_s.start_with?('client_side_validation')
     end
   end
 end
