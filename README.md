@@ -107,6 +107,14 @@ params.dog.name #=> "Bailey"
 params.dog.breed #=> "Shiba Inu"
 ```
 
+# Using Transactions
+
+By default, SimpleAction via SimpleParams will run the `execute` method inside of an ActiveRecord transaction.  You can modify this setting inside an initializer file.
+
+```ruby
+SimpleAction::Service.transaction = false
+```
+
 # ApiPie Documentation
 
 If your project is using [apipie-rails](http://example.com/ "apipie-rails"),
