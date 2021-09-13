@@ -33,12 +33,12 @@ module SimpleAction
     end
 
     def transaction=(bool)
-      @transaction = !!bool
+      @@transaction = !!bool
     end
 
     # @return [Boolean]
     def transaction?
-      defined?(@transaction) ? @transaction : true
+      defined?(@@transaction) ? @@transaction : true
     end
 
     # @return [Hash]
